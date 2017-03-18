@@ -49,7 +49,6 @@ def get_series(url):
 			break
 
 def get_epos(url):
-#</div></div></div></div></div></div><a class="panet-thumbnail" href=(.*)</div></a>
 	max = 15
 	orig = url
 	for i in range(1, max):
@@ -60,12 +59,12 @@ def get_epos(url):
 			response = urllib2.urlopen(req)
 			link = response.read()
 			counter =0
-			result = re.search('</div></div><div class="panet-thumbnails"><div><a class="panet-thumbnail" title=(.*)</div></div></div>', link)
+			result = re.search('</div></div></div></div></div></div><a class="panet-thumbnail" href=(.*)</div></a>', link)
 			for itr in result.group().split('panet-thumbnail"'):
 				counter = counter+1
 				if counter >1:
 					path ='http://www.panet.co.il'+str( itr).split('href="')[1].split('"><img')[0].strip()
-					name = str(itr).split('title="')[1].split('" href')[0].strip()
+					name = str(itr).split('" alt="')[1].split('"><div')[0].strip()
 					img = str(itr).split('src="')[1].split('" alt')[0].strip()
 					addLink(name,path,3,img)
 					print path

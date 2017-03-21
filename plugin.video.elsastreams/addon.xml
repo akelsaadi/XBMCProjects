@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="plugin.video.elsastreams"
+  version="0.1.0"
+  name="ElsasStreams"
+  provider-name="Elsa">
+  <requires>
+    <import addon="xbmc.python"
+            version="0.1.0"/>
+			 <import addon="script.module.web-pdb" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Football and Basketball Streams</summary>
+    <description>Free football and basketball streams</description>
+   
+    <platform>all</platform>
+  </extension>
+</addon>

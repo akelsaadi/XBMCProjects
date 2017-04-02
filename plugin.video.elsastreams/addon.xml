@@ -2,7 +2,7 @@
 <addon
   id="plugin.video.elsastreams"
   version="0.1.0"
-  name="ElsasStreams"
+  name="ElsaStreams"
   provider-name="Elsa">
   <requires>
     <import addon="xbmc.python"

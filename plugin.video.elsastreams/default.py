@@ -94,15 +94,44 @@ def get_video(url):
 			if 'nasa' not in item6:
 				listItem = xbmcgui.ListItem(path=str(item6))
 				xbmcplugin.setResolvedUrl(_thisPlugin, True, listItem)
-	else:
 	
+	elif 'qif' in url:
+		import web_pdb; web_pdb.set_trace()
+		i=1
+		req6 = urllib2.Request(url)
+		response6 = urllib2.urlopen(req6)
+		link6 = response6.read()
+		
+		result6 = re.findall(r'<iframe width="336"(.*?)</iframe>',link6,re.DOTALL)
+		for item6 in result6:
+			links = item6.split('src="')[1].split('"')[0]
+			links = url + links
+			name = 'link' +str(i)
+			i+=1
+			addLink(name, links, 3, '')
+	else:
+		i=1
+		import web_pdb; web_pdb.set_trace()
 		req4 = urllib2.Request(url)
 		response4 = urllib2.urlopen(req4)
 		link4 = response4.read()
 		result4 = re.findall(r'source: "(.*?)",', link4, re.DOTALL)
+		result7 = re.findall(r'URL=(.*?)">',link4,re.DOTALL)
+		for item7 in result7:
+			linkers = item7
+		req7 = urllib2.Request(linkers)
+		response7= urllib2.urlopen(req7)
+		link7 = response7.read()
+		result6 = re.findall(r'<iframe width="336"(.*?)</iframe>',link7,re.DOTALL)
 		for item4 in result4:
 			listItem = xbmcgui.ListItem(path=str(item4))
 			xbmcplugin.setResolvedUrl(_thisPlugin, True, listItem)
+		for item5 in result6:
+			links = item5.split('src="')[1].split('"')[0]
+			links = linkers + links
+			name = 'link' +str(i)
+			i+=1
+			addLink(name, links, 3, '')
 
 
 def get_params():

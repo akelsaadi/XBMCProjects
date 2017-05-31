@@ -1,6 +1,18 @@
 # -*- coding: utf8 -*-
-import urllib,urllib2,xbmcplugin,xbmcgui,xbmcaddon
+import urllib,urllib2,re,xbmcplugin,xbmcgui
+import xbmc, xbmcgui, xbmcplugin, xbmcaddon
+from httplib import HTTP
+from urlparse import urlparse
+import StringIO
+import urllib2,urllib
 import re
+import httplib
+import time
+import xbmcgui
+from urllib2 import Request, build_opener, HTTPCookieProcessor, HTTPHandler
+import cookielib
+import datetime
+
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.alarab')
 __icon__ = __settings__.getAddonInfo('icon')
@@ -12,17 +24,17 @@ _pluginName = (sys.argv[0])
 
 
 
-def CATEGORIES():
-	addDir("RAMADAN MORROCAN SERIES","/ramadan2016/مغربية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN SYRIAN SERIES","http://tv1.alarab.com/ramadan2016/سورية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN EGYPTIAN SERIES","http://tv1.alarab.net/ramadan2016/مصرية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN KHALIJI SERIES","http://tv1.alarab.net/ramadan2016/خليجية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN LEBANESE SERIES","http://tv1.alarab.net/ramadan2016/لبانينة",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN KUWAITI SERIES","http://tv1.alarab.net/ramadan2016/كويتية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN SAUDI SERIES","http://tv1.alarab.net/ramadan2016/سعودية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN JORDANIAN SERIES","http://tv1.alarab.net/ramadan2016/اردنية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN BAHRAINI SERIES","http://tv1.alarab.net/ramadan2016/بحرينية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
-	addDir("RAMADAN EMARATI SERIES","http://tv1.alarab.net/ramadan2016/اماراتية",2,"http://wadeni.com/images/icons/0alarab-net.jpg")
+def getCats(url):
+	req = urllib2.Request(url)
+	response = urllib2.urlopen(req)
+	link = response.read()
+	target = re.findall(r'<div id="nav">(.*?)</div>', link, re.DOTALL)
+	for items in target:
+		mypath = re.findall(r' href="/(.*?)/', items)
+		myname = myname = re.findall(r'" >(.*?)</a></li>', items)
+		for it_name, it_mypath in zip(myname, mypath):
+			holder = 'http://tv1.alarab.com/'+it_mypath +'/'
+			addDir(it_name,holder,2,"")
 
 def getMovie(url):
 	openerx = urllib2.build_opener()
@@ -50,6 +62,7 @@ def getMovie(url):
 		addDir("("+seitenzahlselected+"/"+str(seitenwieviel)+") Next Page",nextpagelink,1,"http://wadeni.com/images/icons/0alarab-net.jpg")
 
 def getSerie(url):
+	import web_pdb; web_pdb.set_trace()
 	openerx = urllib2.build_opener()
 	sockx = openerx.open(url)
 	contentx = sockx.read()
@@ -62,17 +75,7 @@ def getSerie(url):
 		urljetzt = "http://tv1.alarab.net/"+linkjetzt[1]
 		namejetzt = linkjetzt[5]
 		addDir(namejetzt,urljetzt,3,imgjetzt)
-	seitenzahl1 = contentx.split('<div class="pages"><center>')
-	seitenzahl2 = seitenzahl1[1].split("</div></center></div>")
-	seitenzahl3 = seitenzahl2[0].split('tsc_3d_button blue"')
-	seitenzahl4 = seitenzahl3[1].split(">")
-	seitenzahl5 = seitenzahl4[1].split("<")
-	seitenzahlselected = seitenzahl5[0]
-	seitenwieviel = seitenzahl2[0].count("href")
-	if int(seitenzahlselected) < seitenwieviel:
-		nextpagelink1 = seitenzahl3[1].split('"')
-		nextpagelink = "http://tv1.alarab.net" + nextpagelink1[7]
-		addDir("("+seitenzahlselected+"/"+str(seitenwieviel)+") Next Page",nextpagelink,2,"http://wadeni.com/images/icons/0alarab-net.jpg")
+
 
 def getSerieFolge(url):
 	openerx = urllib2.build_opener()
@@ -190,7 +193,7 @@ print "Name: "+str(name)
 
 if mode==None or url==None or len(url)<1:
         print ""
-        CATEGORIES()
+        getCats('http://tv1.alarab.com')
 elif mode==1:
 	print ""+url
 	getMovie(url)

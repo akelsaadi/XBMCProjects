@@ -36,45 +36,26 @@ def getCats(url):
 			holder = 'http://tv1.alarab.com/'+it_mypath +'/'
 			addDir(it_name,holder,2,"")
 
-def getMovie(url):
-	openerx = urllib2.build_opener()
-	sockx = openerx.open(url)
-	contentx = sockx.read()
-	sockx.close()
-	wieviele = contentx.count('<div class="video-box">')
-	teilen = contentx.split('<div class="video-box">')
-	for i in range(1,wieviele+1):
-		linkjetzt = teilen[i].split('"')
-		imgjetzt = linkjetzt[3]
-		urljetzt = "http://tv1.alarab.net/"+linkjetzt[1]
-		namejetzt = linkjetzt[5]
-		addLink(namejetzt,urljetzt,4,imgjetzt)
-	seitenzahl1 = contentx.split('<div class="pages"><center>')
-	seitenzahl2 = seitenzahl1[1].split("</div></center></div>")
-	seitenzahl3 = seitenzahl2[0].split('tsc_3d_button blue"')
-	seitenzahl4 = seitenzahl3[1].split(">")
-	seitenzahl5 = seitenzahl4[1].split("<")
-	seitenzahlselected = seitenzahl5[0]
-	seitenwieviel = seitenzahl2[0].count("href")
-	if int(seitenzahlselected) < seitenwieviel:
-		nextpagelink1 = seitenzahl3[1].split('"')
-		nextpagelink = "http://tv1.alarab.net" + nextpagelink1[7]
-		addDir("("+seitenzahlselected+"/"+str(seitenwieviel)+") Next Page",nextpagelink,1,"http://wadeni.com/images/icons/0alarab-net.jpg")
 
-def getSerie(url):
-	import web_pdb; web_pdb.set_trace()
-	openerx = urllib2.build_opener()
-	sockx = openerx.open(url)
-	contentx = sockx.read()
-	sockx.close()
-	wieviele = contentx.count('<div class="video-box">')
-	teilen = contentx.split('<div class="video-box">')
-	for i in range(1,wieviele+1):
-		linkjetzt = teilen[i].split('"')
-		imgjetzt = linkjetzt[3]
-		urljetzt = "http://tv1.alarab.net/"+linkjetzt[1]
-		namejetzt = linkjetzt[5]
-		addDir(namejetzt,urljetzt,3,imgjetzt)
+def getTVSeries(url):
+	req = urllib2.Request(url)
+	response = urllib2.urlopen(req)
+	link = response.read()
+	target_pg = re.findall(r'<a class="tsc_3d(.*?)</a>', link, re.DOTALL)
+	for pg in target_pg:
+		pg_path = re.findall(r' href="/(.*?)"', pg)
+		for page_path in pg_path:
+			req_link = 'http://tv1.alarab.com/' + page_path
+			page_req = urllib2.Request(req_link)
+			page_res = urllib2.urlopen(page_req)
+			page_link = page_res.read()
+			target_ep = re.findall(r'<div class="video-box">(.*?)</a></div>', page_link, re.DOTALL)
+			for eps in target_ep:
+				ep_path = re.findall(r' href="/(.*?)">', eps)
+				ep_name = re.findall(r'alt="(.*?)" />', eps)
+				for names, paths in zip(ep_name, ep_path):
+					holder = 'http://tv1.alarab.com/' + paths #set path
+					addDir(names,holder,3,"")
 
 
 def getSerieFolge(url):
@@ -199,7 +180,7 @@ elif mode==1:
 	getMovie(url)
 elif mode==2:
 	print ""+url
-	getSerie(url)
+	getTVSeries(url)
 elif mode==3:
 	print ""+url
 	getSerieFolge(url)

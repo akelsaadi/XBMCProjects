@@ -22,8 +22,6 @@ _thisPlugin = int(sys.argv[1])
 _pluginName = (sys.argv[0])
 
 
-
-
 def getCats(url):
 	req = urllib2.Request(url)
 	response = urllib2.urlopen(req)
@@ -37,25 +35,34 @@ def getCats(url):
 			addDir(it_name,holder,2,"")
 
 
-def getTVSeries(url):
+
+def getTVSeries(url): 
 	req = urllib2.Request(url)
 	response = urllib2.urlopen(req)
 	link = response.read()
 	target_pg = re.findall(r'<a class="tsc_3d(.*?)</a>', link, re.DOTALL)
+	target_ep = re.findall(r'<div class="video-box">(.*?)</a></div>', link, re.DOTALL)
+	target_page_counter = re.findall(r'<a class="tsc_3d_button blue"(.*?)</a>', link)
+	for counts in target_page_counter:
+		real_number = counts.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('" >')[0]
+	counter = int(real_number)+1
+	for eps in target_ep:
+		ep_path = re.findall(r' href="/(.*?)">', eps)
+		ep_name = re.findall(r'alt="(.*?)" />', eps)
+		for names, paths in zip(ep_name, ep_path):
+			holder = 'http://tv1.alarab.com/' + paths #set path
+			addDir(names,holder,3,"")
 	for pg in target_pg:
-		pg_path = re.findall(r' href="/(.*?)"', pg)
-		for page_path in pg_path:
-			req_link = 'http://tv1.alarab.com/' + page_path
-			page_req = urllib2.Request(req_link)
-			page_res = urllib2.urlopen(page_req)
-			page_link = page_res.read()
-			target_ep = re.findall(r'<div class="video-box">(.*?)</a></div>', page_link, re.DOTALL)
-			for eps in target_ep:
-				ep_path = re.findall(r' href="/(.*?)">', eps)
-				ep_name = re.findall(r'alt="(.*?)" />', eps)
-				for names, paths in zip(ep_name, ep_path):
-					holder = 'http://tv1.alarab.com/' + paths #set path
-					addDir(names,holder,3,"")
+
+		pg_path_str = pg.split('href="')[1].split('"')[0]
+		pg_path_link = 'http://tv1.alarab.com/' + pg_path_str
+		#pg_number_str = re.findall(r' title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 (.*?)" >',pg)
+		pg_number_str = pg.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('" >')[0]
+		pg_number = int(pg_number_str)
+		if (counter == pg_number):
+			addDir('Next Page', pg_path_link, 2, "")
+
+	
 
 
 def getSerieFolge(url):
@@ -189,4 +196,4 @@ elif mode==4:
 	PlayMovie(url)
 
 
-xbmcplugin.endOfDirectory(int(sys.argv[1]))
+xbmcplugin.endOfDirectory(int(sys.argv[1]), updateListing=True)

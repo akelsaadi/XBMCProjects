@@ -66,31 +66,22 @@ def getTVSeries(url):
 
 
 def getSerieFolge(url):
-	openerx = urllib2.build_opener()
-	sockx = openerx.open(url)
-	contentx = sockx.read()
-	sockx.close()
-	wieviele = contentx.count('<div class="video-box">')
-	teilen = contentx.split('<div class="video-box">')
-	for i in range(1,wieviele+1):
-		linkjetzt = teilen[i].split('"')
-		imgjetzt = linkjetzt[3]
-		urljetzt = "http://tv1.alarab.net/"+linkjetzt[1]
-		namejetzt = linkjetzt[5]
-		addLink(namejetzt,urljetzt,4,imgjetzt)
-	seitenzahl1 = contentx.split('<div class="pages"><center>')
-	seitenzahl2 = seitenzahl1[1].split("</div></center></div>")
-	seitenzahl3 = seitenzahl2[0].split('tsc_3d_button blue"')
-	seitenzahl4 = seitenzahl3[1].split(">")
-	seitenzahl5 = seitenzahl4[1].split("<")
-	seitenzahlselected = seitenzahl5[0]
-	seitenwieviel = seitenzahl2[0].count("href")
-	if int(seitenzahlselected) < seitenwieviel:
-		nextpagelink1 = seitenzahl3[1].split('"')
-		nextpagelink = "http://tv1.alarab.net" + nextpagelink1[7]
-		addDir("("+seitenzahlselected+"/"+str(seitenwieviel)+") Next Page",nextpagelink,3,"http://wadeni.com/images/icons/0alarab-net.jpg")
+	req = urllib2.Request(url)
+	response = urllib2.urlopen(req)
+	link = response.read()
+	#target_episodes = re.findall(r'<div class="fav">(.*?)</div>\s+</a>', link, re.DOTALL)
+	target_episodes = re.findall(r'<div class="related_on">(.*?)<div id="results">', link, re.DOTALL)
+	print target_episodes
+	for episodes in target_episodes:
+		episode_name = re.findall(r'div class="">(.*?)</div',episodes,re.DOTALL)
+		episode_path = re.findall(r'a href="/(.*?)"', episodes,re.DOTALL)
+		for name, paths in zip(episode_name, episode_path):
+			holder = 'http://tv1.alarab.com/'+paths
+			print name
+			print paths
+			addLink(name,holder,4,"")
 
-def PlayMovie(url):
+def Play(url):
 	url1 = 'http://alarabplayers.alarab.com/?vid='+url.split('v')[2]
 	url2 = url1.split('-')[0]
 	req = urllib2.Request(url2)
@@ -102,18 +93,6 @@ def PlayMovie(url):
 	
 
 
-def getFlvAddress(par_sHtmlContent):
-		# search for the .flv address and change the flv. prefix to flv2.	
-		sFlvAddress = re.search(r'file=.*?\.flv', par_sHtmlContent, re.DOTALL)
-		
-		sFlvAddress = sFlvAddress.group()
-
-		iHttpStartIndex = sFlvAddress.find('=') 
-
-		sFinalAndCorrectedFlvAddress = sFlvAddress[iHttpStartIndex+1:].replace('flv.', 'flv2.')
-		sFinalAndCorrectedFlvAddress = sFinalAndCorrectedFlvAddress.replace('/flv/','/new/flv/')
-		
-		return sFinalAndCorrectedFlvAddress
 
 def get_params():
         param=[]
@@ -193,7 +172,7 @@ elif mode==3:
 	getSerieFolge(url)
 elif mode==4:
 	print ""+url
-	PlayMovie(url)
+	Play(url)
 
 
 xbmcplugin.endOfDirectory(int(sys.argv[1]), updateListing=True)

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+<addon
+  id="plugin.video.alarab"
+  version="4.4.1"
+  name="AlArab"
+  provider-name="bisha">
+  <requires>
+   <import addon="xbmc.python"
+            version="2.1.0"/>
+	<import addon="script.module.web-pdb" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>AlArabNet</summary>
+    <description>AlArabNet.</description>
+
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon
+  id="plugin.video.bokra"
+  version="5.2.1"
+  name="BOKRA"
+  provider-name="Bisha">
+  <requires>
+    <import addon="xbmc.python"
+            version="2.1.0"/>
+			<import addon="script.module.web-pdb" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Bokra vod Arabic plugin</summary>
+    <description>Bokra Arabic plugin. Arabic series and films VOD</description>
+
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon
+  id="plugin.video.elsastreams"
+  version="0.1.0"
+  name="ElsaStreams"
+  provider-name="Elsa">
+  <requires>
+    <import addon="xbmc.python"
+            version="0.1.0"/>
+			 <import addon="script.module.web-pdb" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Football and Basketball Streams</summary>
+    <description>Free football and basketball streams</description>
+
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon
+  id="plugin.video.panet"
+  version="2.1.1"
+  name="Panet"
+  provider-name="Bisha">
+  <requires>
+    <import addon="xbmc.python"
+            version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Panet vod Arabic plugin</summary>
+    <description>Panet Arabic plugin. This plugin is completely FREE”</description>
+
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon
+  id="plugin.video.sonara"
+  version="2.2.1"
+  name="Sonara"
+  provider-name="Bisha">
+  <requires>
+    <import addon="xbmc.python"
+            version="2.1.0"/>
+
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Sonara vod Arabic plugin</summary>
+    <description>Sonara Arabic plugin.</description>
+
+    <platform>all</platform>
+  </extension>
+</addon>
+
+    <addon id="repository.Elsaadi" name="Elsaadi" version="0.1.0" provider-name="Elsaadi">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="Elsaadi">
+            <info compressed="false">https://raw.githubusercontent.com/akelsaadi/XBMCProjects/MyRepository/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/akelsaadi/XBMCProjects/MyRepository/addons.xml.md5</checksum>
+            <datadir zip="true">https://github.com/akelsaadi/MyRepository/XBMCProjects/MyRepository</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>Elsaadi's Addons</summary>
+            <description>Get access to my addons</description>
+            <platform>all</platform>
+    </extension>
+</addon>
+</addons>

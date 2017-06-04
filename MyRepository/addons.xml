@@ -116,7 +116,7 @@
         <extension point="xbmc.addon.repository" name="Elsaadi">
             <info compressed="false">https://raw.githubusercontent.com/akelsaadi/XBMCProjects/master/MyRepository/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/akelsaadi/XBMCProjects/master/MyRepository/addons.xml.md5</checksum>
-            <datadir zip="true">https://github.com/akelsaadi/MyRepository/XBMCProjects/MyRepository</datadir>
+            <datadir zip="true">https://github.com/akelsaadi/XBMCProjects/MyRepository/</datadir>
             <hashes>false</hashes>
         </extension>
         <extension point="xbmc.addon.metadata">

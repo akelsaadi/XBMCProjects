@@ -175,4 +175,4 @@ elif mode==4:
 	Play(url)
 
 
-xbmcplugin.endOfDirectory(int(sys.argv[1]), updateListing=True)
+xbmcplugin.endOfDirectory(int(sys.argv[1]))

@@ -4,7 +4,7 @@
 Fixing and developing video addons for Kodi(XBMC). Kodi is a free and open-source media player software application.
 
 
-# How to Install Repo and get Addons
+## How to Install Repo and get Addons
 
 
 1. Download zip file: <a href= "https://github.com/akelsaadi/XBMCProjects/blob/master/MyRepository/repository.Elsaadi/repository.Elsaadi-0.1.0.zip">Here</a>

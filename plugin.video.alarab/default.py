@@ -73,13 +73,14 @@ def getSerieFolge(url):
 	target_episodes = re.findall(r'<div class="related_on">(.*?)<div id="results">', link, re.DOTALL)
 	print target_episodes
 	for episodes in target_episodes:
+		episode_img = re.findall(r'img src="(.*?)"', episodes,re.DOTALL)
 		episode_name = re.findall(r'div class="">(.*?)</div',episodes,re.DOTALL)
 		episode_path = re.findall(r'a href="/(.*?)"', episodes,re.DOTALL)
-		for name, paths in zip(episode_name, episode_path):
+		for name, paths, images in zip(episode_name, episode_path, episode_img):
 			holder = 'http://tv1.alarab.com/'+paths
 			print name
 			print paths
-			addLink(name,holder,4,"")
+			addLink(name,holder,4,images)
 
 def Play(url):
 	url1 = 'http://alarabplayers.alarab.com/?vid='+url.split('v')[2]

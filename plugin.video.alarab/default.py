@@ -23,13 +23,15 @@ _pluginName = (sys.argv[0])
 
 
 def getCats(url):
+	UA='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'
 	req = urllib2.Request(url)
+	req.add_header('User-Agent', UA)
 	response = urllib2.urlopen(req)
 	link = response.read()
-	target = re.findall(r'<div id="nav">(.*?)</div>', link, re.DOTALL)
+	target = re.findall(r'<div id=nav>(.*?)</div>', link, re.DOTALL)
 	for items in target:
 		mypath = re.findall(r' href="/(.*?)/', items)
-		myname = myname = re.findall(r'" >(.*?)</a></li>', items)
+		myname = myname = re.findall(r'">(.*?)</a></li>', items)
 		for it_name, it_mypath in zip(myname, mypath):
 			holder = 'http://tv1.alarab.com/'+it_mypath +'/'
 			addDir(it_name,holder,2,"")
@@ -41,14 +43,14 @@ def getTVSeries(url):
 	response = urllib2.urlopen(req)
 	link = response.read()
 	target_pg = re.findall(r'<a class="tsc_3d(.*?)</a>', link, re.DOTALL)
-	target_ep = re.findall(r'<div class="video-box">(.*?)</a></div>', link, re.DOTALL)
+	target_ep = re.findall(r'<div class=video-box>(.*?)</a></div>', link, re.DOTALL)
 	target_page_counter = re.findall(r'<a class="tsc_3d_button blue"(.*?)</a>', link)
 	for counts in target_page_counter:
-		real_number = counts.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('" >')[0]
+		real_number = counts.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('">')[0]
 	counter = int(real_number)+1
 	for eps in target_ep:
 		ep_path = re.findall(r' href="/(.*?)">', eps)
-		ep_name = re.findall(r'alt="(.*?)" />', eps)
+		ep_name = re.findall(r'alt="(.*?)"/>', eps)
 		for names, paths in zip(ep_name, ep_path):
 			holder = 'http://tv1.alarab.com/' + paths #set path
 			addDir(names,holder,3,"")
@@ -57,7 +59,7 @@ def getTVSeries(url):
 		pg_path_str = pg.split('href="')[1].split('"')[0]
 		pg_path_link = 'http://tv1.alarab.com/' + pg_path_str
 		#pg_number_str = re.findall(r' title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 (.*?)" >',pg)
-		pg_number_str = pg.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('" >')[0]
+		pg_number_str = pg.split('title=" \xd8\xb5\xd9\x81\xd8\xad\xd8\xa9 ')[1].split('">')[0]
 		pg_number = int(pg_number_str)
 		if (counter == pg_number):
 			addDir('Next Page', pg_path_link, 2, "")
@@ -161,7 +163,7 @@ print "Name: "+str(name)
 
 if mode==None or url==None or len(url)<1:
         print ""
-        getCats('http://tv1.alarab.com')
+        getCats('http://tv1.alarab.com/view-8/')
 elif mode==1:
 	print ""+url
 	getMovie(url)

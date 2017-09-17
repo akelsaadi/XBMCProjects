@@ -2,7 +2,7 @@
 <addons>
 <addon
   id="plugin.video.alarab"
-  version="4.4.5"
+  version="4.4.6"
   name="AlArab"
   provider-name="Elsaadi">
   <requires>

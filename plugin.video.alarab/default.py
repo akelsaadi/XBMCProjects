@@ -28,12 +28,14 @@ def getCats(url):
 	req.add_header('User-Agent', UA)
 	response = urllib2.urlopen(req)
 	link = response.read()
-	target = re.findall(r'<div id=nav>(.*?)</div>', link, re.DOTALL)
+	target = re.findall(r'<div id="nav">(.*?)</div>', link, re.DOTALL)
 	for items in target:
 		mypath = re.findall(r' href="/(.*?)/', items)
-		myname = myname = re.findall(r'">(.*?)</a></li>', items)
-		for it_name, it_mypath in zip(myname, mypath):
+		myname = myname = re.findall(r'" >(.*?)</a></li>', items)
+		for it_name, it_mypath in zip(myname, mypath): 
 			holder = 'http://tv1.alarab.com/'+it_mypath +'/'
+			print it_name
+			print holder
 			addDir(it_name,holder,2,"")
 
 
@@ -163,7 +165,7 @@ print "Name: "+str(name)
 
 if mode==None or url==None or len(url)<1:
         print ""
-        getCats('http://tv1.alarab.com/view-8/')
+        getCats('http://tv1.alarab.com/view-6181/')
 elif mode==1:
 	print ""+url
 	getMovie(url)
